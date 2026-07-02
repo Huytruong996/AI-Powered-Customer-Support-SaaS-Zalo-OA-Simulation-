@@ -20,11 +20,15 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const httpServer = createServer(app);
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    callback(null, true); // Allow all origins dynamically
+  },
+  credentials: true,
+};
+
 const io = new Server(httpServer, {
-  cors: {
-    origin: ["http://localhost:3000", "https://ai-powered-customer-support-saa-s-zalo-oa-simulation-q227ci10t.vercel.app", process.env.FRONTEND_URL || ""],
-    credentials: true,
-  }
+  cors: corsOptions
 });
 app.set('io', io);
 
@@ -37,10 +41,7 @@ io.on('connection', (socket) => {
 
 app.use(cookieParser());
 app.use(helmet());
-app.use(cors({
-    origin: ["http://localhost:3000", "https://ai-powered-customer-support-saa-s-zalo-oa-simulation-q227ci10t.vercel.app", process.env.FRONTEND_URL || ""],
-    credentials: true,
-  }));
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
