@@ -4,9 +4,9 @@ services:
     image: pgvector/pgvector:pg15
     restart: always
     environment:
-      POSTGRES_USER: zalouser
-      POSTGRES_PASSWORD: zalopassword
-      POSTGRES_DB: zalo_saas
+      POSTGRES_USER: ${POSTGRES_USER:-zalouser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secretpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-zalo_saas}
     ports:
       - '5433:5432'
     volumes:
