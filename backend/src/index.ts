@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 4000;
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://ai-powered-customer-support-saa-s-zalo-oa-simulation-q227ci10t.vercel.app", process.env.FRONTEND_URL || ""],
     credentials: true,
   }
 });
@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
 app.use(cookieParser());
 app.use(helmet());
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://ai-powered-customer-support-saa-s-zalo-oa-simulation-q227ci10t.vercel.app", process.env.FRONTEND_URL || ""],
     credentials: true,
   }));
 
