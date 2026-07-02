@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  extensions = [vector]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(STAFF)
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  auditLogs AuditLog[]
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+model Customer {
+  id          String   @id @default(uuid())
+  zaloUserId  String   @unique
+  displayName String
+  phone       String?
+  tags        String[]
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  conversations Conversation[]
+}
+
+model Conversation {
+  id          String   @id @default(uuid())
+  customerId  String
+  customer    Customer @relation(fields: [customerId], references: [id])
+  status      ConversationStatus @default(OPEN)
+  unreadCount Int @default(0)
+  requiresHuman Boolean @default(false)
+  botActive   Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  messages    Message[]
+  aiLogs      AIConversationLog[]
+}
+
+enum ConversationStatus {
+  OPEN
+  CLOSED
+}
+
+model Message {
+  id             String   @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  content        String
+  senderType     SenderType
+  zaloMessageId  String?  @unique
+  createdAt      DateTime @default(now())
+}
+
+enum SenderType {
+  CUSTOMER
+  STAFF
+  AI
+}
+
+model CannedResponse {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  category  String?
+  shortcut  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AIConfiguration {
+  id               String   @id @default(uuid())
+  provider         String   @default("gemini") // gemini, openrouter
+  apiKey           String?
+  systemPrompt     String?
+  autoReplyEnabled Boolean  @default(false)
+  workingHoursStart String  @default("08:00")
+  workingHoursEnd   String  @default("17:00")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model AIConversationLog {
+  id             String   @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  prompt         String
+  response       String
+  provider       String
+  createdAt      DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  details   String?
+  createdAt DateTime @default(now())
+}
+
+model ZaloConfiguration {
+  id           String   @id @default(uuid())
+  appId        String?
+  secretKey    String?
+  accessToken  String?
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Knowledge {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  type      String   @default("GENERAL") // e.g. PRODUCT, POLICY, GENERAL
+  embedding Unsupported("vector(384)")?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
