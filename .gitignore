@@ -29,3 +29,8 @@ coverage/
 .agents/
 brain/
 .vercel/
+
+# Markdown (Tài liệu nội bộ)
+*.md
+!README.md
+!*/README.md
