@@ -63,7 +63,7 @@ export async function buildEnhancedSystemPrompt(
           SELECT title, content, type, 1 - (embedding <=> $1::vector) as similarity
           FROM "Knowledge"
           ORDER BY embedding <=> $1::vector
-          LIMIT 3
+          LIMIT 6
         `, vectorStr);
 
         if (topKnowledge && topKnowledge.length > 0) {
