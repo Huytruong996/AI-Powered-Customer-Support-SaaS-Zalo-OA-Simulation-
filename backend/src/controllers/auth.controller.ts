@@ -105,3 +105,39 @@ export const getMe = async (req: AuthRequest, res: Response) => {
 
   return res.json(user);
 };
+
+export const demoLogin = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const demoEmail = 'demo@demo.com';
+    let user = await db.user.findUnique({ where: { email: demoEmail } });
+    
+    if (!user) {
+      const hashedPassword = await bcrypt.hash('demo123', 10);
+      user = await db.user.create({
+        data: { email: demoEmail, password: hashedPassword, name: 'Demo User', role: 'ADMIN' }
+      });
+    }
+    
+    const payloadJWT: JwtPayload = {
+      userId: user.id,
+      role: user.role,
+    };
+    
+    const accessToken = jwt.sign(
+      payloadJWT,
+      JWT_SECRET,
+      { expiresIn: (process.env.JWT_EXPIRES_IN || '1d') as any }
+    );
+
+    res.cookie("access_token", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.json({ success: true, data: { user: { id: user.id, email: user.email, name: user.name, role: user.role } } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};

@@ -21,6 +21,9 @@ export const authAPI = {
   },
   logout() { 
     return apiFetch.get("/auth/logout")
+  },
+  demoLogin() {
+    return apiFetch.post<Auth>("/auth/demo");
   }
 };
 

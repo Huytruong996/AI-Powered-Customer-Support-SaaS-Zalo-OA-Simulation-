@@ -35,6 +35,23 @@ export default function LoginPage() {
     }
   };
 
+  const handleDemoLogin = async () => {
+    setError("");
+    try {
+      const res = await authAPI.demoLogin();
+
+      if (res.success) {
+        await getUserService();
+        const redirectUrl = new URLSearchParams(window.location.search).get("redirect");
+        router.replace(redirectUrl || "/dashboard");
+      } else {
+        setError(res.message || "Demo login failed");
+      }
+    } catch (err) {
+      setError("An error occurred during demo login.");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
       <Card className="w-full max-w-md">
@@ -68,7 +85,22 @@ export default function LoginPage() {
               />
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
-            <Button type="submit" className="w-full">Login</Button>
+            <div className="flex flex-col space-y-2">
+              <Button type="submit" className="w-full">Login</Button>
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white dark:bg-gray-950 px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+              <Button type="button" variant="outline" className="w-full" onClick={handleDemoLogin}>
+                Try Demo
+              </Button>
+            </div>
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">
