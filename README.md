@@ -1,70 +1,66 @@
-# AI-Powered Customer Support SaaS (Zalo OA Simulation)
+# 🚀 AI-Powered Customer Support SaaS (Zalo OA Simulation)
 
-![Project Status](https://img.shields.io/badge/Status-In_Development-blue.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15.0-black.svg?logo=next.js)
 ![Node.js](https://img.shields.io/badge/Node.js-Backend-339933.svg?logo=node.js)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-pgvector-4169E1.svg?logo=postgresql)
+![Status](https://img.shields.io/badge/Status-In_Development-blue.svg)
 
-## 📌 Giới thiệu (Overview)
-Dự án này là một hệ thống SaaS (Software as a Service) Hỗ trợ Khách hàng tích hợp Trí tuệ nhân tạo (AI), được thiết kế mô phỏng theo nền tảng **Zalo Official Account (Zalo OA)**. 
-Hệ thống cho phép các doanh nghiệp quản lý tin nhắn của khách hàng từ nhiều nguồn khác nhau, đồng thời sử dụng AI để tự động trả lời, phân tích ngữ cảnh và đề xuất câu trả lời dựa trên kho tri thức (Knowledge Base) của riêng doanh nghiệp.
+Dự án này là một hệ thống SaaS (Software as a Service) Hỗ trợ Khách hàng tích hợp Trí tuệ Nhân tạo (AI), được thiết kế mô phỏng theo nền tảng **Zalo Official Account (Zalo OA)**. 
+Hệ thống cho phép các doanh nghiệp quản lý tin nhắn của khách hàng đa kênh, đồng thời sử dụng AI để tự động trả lời, phân tích ngữ cảnh và đề xuất câu trả lời dựa trên kho tri thức (Knowledge Base) độc quyền.
 
-## 🚀 Tính năng nổi bật (Key Features)
-- **Tích hợp Zalo OA (Mô phỏng):** Giao diện nhắn tin và quản lý tương tác khách hàng theo thời gian thực tương tự Zalo OA.
-- **AI Chatbot & RAG (Retrieval-Augmented Generation):** AI có khả năng đọc tài liệu nội bộ của doanh nghiệp (được vector hóa thông qua `pgvector`) để tự động trả lời câu hỏi của khách hàng một cách chính xác.
-- **Quản lý Hộp thư (Inbox Dashboard):** Giao diện phân loại tin nhắn, quản lý đoạn chat, và hỗ trợ trực tiếp (Live Chat).
-- **Quản lý Kho tri thức (Knowledge Base):** Cho phép doanh nghiệp tải lên tài liệu mẫu, quy trình chăm sóc khách hàng để "huấn luyện" AI.
-- **Phân quyền & Quản trị:** Quản lý tài khoản doanh nghiệp (Tenant) độc lập và bảo mật thông tin khách hàng.
+---
 
-## 🛠️ Công nghệ sử dụng (Tech Stack)
+## ✨ Những Tính Năng Nổi Bật (Key Features)
 
-### Frontend (Giao diện người dùng)
-- **Framework:** Next.js (App Router)
-- **Ngôn ngữ:** TypeScript
-- **Giao diện & UI Components:** Tailwind CSS, shadcn/ui
+### 1. 💬 Giao Diện Quản Lý Tin Nhắn (Inbox Dashboard)
+Giao diện nhắn tin và quản lý tương tác khách hàng theo thời gian thực mô phỏng Zalo OA. Cung cấp cái nhìn toàn cảnh về thông tin khách hàng, lịch sử chat và các công cụ hỗ trợ cho nhân viên (Tags, Ghi chú, Canned Responses).
 
-### Backend (Hệ thống máy chủ)
-- **Framework:** Node.js / Express.js (hoặc tương đương)
-- **Ngôn ngữ:** TypeScript
-- **ORM:** Prisma
-- **AI & Embedding:** Tích hợp mô hình ngôn ngữ lớn (LLM) và local embedding.
+![Dashboard UI](docs/images/dashboard_ui.png)
 
-### Cơ sở dữ liệu (Database)
-- **Hệ quản trị CSDL:** PostgreSQL
-- **Vector Search:** `pgvector` extension (Lưu trữ và truy xuất dữ liệu Knowledge Base cho AI).
-- **Môi trường chạy cục bộ:** Docker Compose
+### 2. 🧠 AI Chatbot & Tích hợp RAG (Retrieval-Augmented Generation)
+Tích hợp trí tuệ nhân tạo (AI) đột phá có khả năng tự động đọc hiểu tài liệu nội bộ của doanh nghiệp (được vector hóa thông qua `pgvector`). AI tự động nắm bắt ngữ cảnh hội thoại, đối chiếu với cơ sở dữ liệu và trả lời câu hỏi của khách hàng một cách thông minh, chính xác, tự nhiên.
 
-## 📂 Cấu trúc thư mục (Folder Structure)
-```
-.
-├── frontend/             # Chứa mã nguồn giao diện Next.js
-├── backend/              # Chứa API Server Node.js và cấu hình Prisma
-├── docker-compose.yml    # Cấu hình khởi tạo Database PostgreSQL + pgvector (Local)
-└── README.md             # Tài liệu mô tả dự án
-```
+![AI Chatbot](docs/images/ai_chatbot_ui.png)
 
-## 💻 Hướng dẫn chạy môi trường phát triển (Local Development)
+### 3. 📚 Quản Lý Kho Tri Thức (Knowledge Base)
+Hệ thống cung cấp một giao diện quản lý dữ liệu huấn luyện cho AI cực kỳ tiện lợi. Doanh nghiệp có thể tạo mới, import hàng loạt qua file CSV và phân loại dữ liệu (Sản phẩm, Chính sách, Thông tin chung) để AI học và trả lời dựa trên dữ liệu đó.
 
-### 1. Khởi động Cơ sở dữ liệu
-Dự án yêu cầu cài đặt Docker. Chạy lệnh sau để khởi động PostgreSQL:
+![Knowledge Base UI](docs/images/knowledge_base_ui.png)
+
+### 4. ⚙️ AI Configuration & Cá Nhân Hóa
+Cấu hình "tính cách" của AI thông qua System Prompt. Bạn có thể định hình giọng văn của AI (Lịch sự, Thân thiện, Chuyên nghiệp) và tùy biến cách AI xưng hô với khách hàng.
+
+---
+
+## 🛠️ Công Nghệ Sử Dụng (Tech Stack)
+
+- **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
+- **Backend:** Node.js / Express.js, TypeScript, Prisma ORM.
+- **Database & AI:** PostgreSQL, `pgvector` (Lưu trữ và truy xuất dữ liệu vector cho AI), @xenova/transformers (Local Embedding).
+
+## 🚀 Hướng Dẫn Chạy Môi Trường Phát Triển (Local Development)
+
+### 1. Khởi Động Cơ Sở Dữ Liệu
+Dự án yêu cầu cài đặt Docker. Chạy lệnh sau để khởi động PostgreSQL (tích hợp sẵn pgvector):
 ```bash
 docker-compose up -d
 ```
 
-### 2. Cài đặt Backend
+### 2. Cài Đặt & Chạy Backend
 ```bash
 cd backend
 npm install
 npx prisma db push  # Cập nhật schema vào database
-npm run dev         # Khởi động server
+npm run dev         # Khởi động server (localhost:8080)
 ```
+> **Tip:** Bạn có thể chạy `npm run seed` để nạp sẵn dữ liệu mẫu (Khách hàng, Đoạn chat, Knowledge Base) vào database.
 
-### 3. Cài đặt Frontend
+### 3. Cài Đặt & Chạy Frontend
 ```bash
 cd frontend
 npm install
-npm run dev         # Khởi động giao diện Next.js
+npm run dev         # Khởi động giao diện Next.js (localhost:3000)
 ```
 
 ---
-*Dự án được phát triển nhằm mục đích cung cấp giải pháp CSKH tự động hóa thông minh cho các doanh nghiệp.*
+*Dự án được phát triển nhằm mục đích cung cấp giải pháp CSKH tự động hóa thông minh cho các doanh nghiệp vừa và nhỏ.*
