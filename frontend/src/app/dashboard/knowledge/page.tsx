@@ -10,6 +10,7 @@ export default function KnowledgePage() {
   const [items, setItems] = useState<KnowledgeItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [filterType, setFilterType] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -21,7 +22,7 @@ export default function KnowledgePage() {
   const fetchItems = async () => {
     setIsLoading(true);
     try {
-      const res = await knowledgeAPI.getKnowledgeList(1, 50, search);
+      const res = await knowledgeAPI.getKnowledgeList(1, 50, search, filterType);
       if (res.success && res.data) {
         setItems(res.data.items);
       }
@@ -37,7 +38,7 @@ export default function KnowledgePage() {
       fetchItems();
     }, 500);
     return () => clearTimeout(delay);
-  }, [search]);
+  }, [search, filterType]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -197,14 +198,26 @@ export default function KnowledgePage() {
         <div className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-700 shadow-sm flex flex-col">
           <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
             <h2 className="font-semibold text-lg">Dữ liệu hiện có</h2>
-            <div className="relative w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-              <Input 
-                placeholder="Tìm kiếm..." 
-                className="pl-9 h-9" 
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-              />
+            <div className="flex space-x-2">
+              <select 
+                className="h-9 rounded-md border border-gray-200 bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none dark:border-gray-700 dark:bg-gray-800"
+                value={filterType}
+                onChange={e => setFilterType(e.target.value)}
+              >
+                <option value="">Tất cả</option>
+                <option value="PRODUCT">Sản phẩm</option>
+                <option value="POLICY">Chính sách</option>
+                <option value="GENERAL">Chung</option>
+              </select>
+              <div className="relative w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                <Input 
+                  placeholder="Tìm kiếm..." 
+                  className="pl-9 h-9" 
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                />
+              </div>
             </div>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-3">

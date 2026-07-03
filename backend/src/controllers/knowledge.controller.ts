@@ -72,6 +72,7 @@ export const getKnowledgeList = async (req: AuthRequest, res: Response): Promise
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
     const search = (req.query.search as string) || '';
+    const type = (req.query.type as string) || '';
     const skip = (page - 1) * limit;
 
     const where: any = {};
@@ -80,6 +81,9 @@ export const getKnowledgeList = async (req: AuthRequest, res: Response): Promise
         { title: { contains: search, mode: 'insensitive' } },
         { content: { contains: search, mode: 'insensitive' } },
       ];
+    }
+    if (type) {
+      where.type = type;
     }
 
     const [items, total] = await Promise.all([

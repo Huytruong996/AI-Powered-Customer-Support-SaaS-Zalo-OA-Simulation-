@@ -20,12 +20,14 @@ export interface PaginatedKnowledge {
 }
 
 export const knowledgeAPI = {
-  getKnowledgeList(page = 1, limit = 20, search = '') {
+  getKnowledgeList(page = 1, limit = 20, search = '', type = '') {
     const params = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
-      search
     });
+    if (search) params.append('search', search);
+    if (type) params.append('type', type);
+
     return apiFetch.get<{ success: boolean; data: PaginatedKnowledge }>(
       `/knowledge?${params.toString()}`
     );
