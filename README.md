@@ -22,6 +22,9 @@ Giao diện nhắn tin và quản lý tương tác khách hàng theo thời gian
 
 ![Canned Response](docs/images/triggerCannedResponse.PNG)
 
+#### Dùng AI gợi ý 
+![SuggestAI](docs/images/suggestAI.gif)
+
 ### 2. 🧠 AI Chatbot & Tích hợp RAG (Retrieval-Augmented Generation)
 Tích hợp trí tuệ nhân tạo (AI) đột phá có khả năng tự động đọc hiểu tài liệu nội bộ của doanh nghiệp (được vector hóa thông qua `pgvector`). AI tự động nắm bắt ngữ cảnh hội thoại, đối chiếu với cơ sở dữ liệu và trả lời câu hỏi của khách hàng một cách thông minh, chính xác, tự nhiên.
 
@@ -35,7 +38,7 @@ Hệ thống cung cấp một giao diện quản lý dữ liệu huấn luyện 
 ### 4. ⚙️ AI Configuration & Cá Nhân Hóa
 Cấu hình "tính cách" của AI thông qua System Prompt. Bạn có thể định hình giọng văn của AI (Lịch sự, Thân thiện, Chuyên nghiệp) và tùy biến cách AI xưng hô với khách hàng.
 
----
+![AI Config](docs/images/AIconfig.PNG)
 
 ## 🛠️ Công Nghệ Sử Dụng (Tech Stack)
 
