@@ -17,6 +17,11 @@ Giao diện nhắn tin và quản lý tương tác khách hàng theo thời gian
 
 ![Dashboard UI](docs/images/dashboard_ui.png)
 
+#### Canned Responses
+![Canned Response](docs/images/cannedResponse.PNG)
+
+![Canned Response](docs/images/triggerCannedResponse.PNG)
+
 ### 2. 🧠 AI Chatbot & Tích hợp RAG (Retrieval-Augmented Generation)
 Tích hợp trí tuệ nhân tạo (AI) đột phá có khả năng tự động đọc hiểu tài liệu nội bộ của doanh nghiệp (được vector hóa thông qua `pgvector`). AI tự động nắm bắt ngữ cảnh hội thoại, đối chiếu với cơ sở dữ liệu và trả lời câu hỏi của khách hàng một cách thông minh, chính xác, tự nhiên.
 
