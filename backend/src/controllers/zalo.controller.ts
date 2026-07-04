@@ -1,15 +1,38 @@
 import { Request, Response } from 'express';
+import crypto from 'crypto';
 import { db } from '../utils/db';
 import { sendZaloMessage } from '../utils/zalo';
+
+/**
+ * Validate HMAC-SHA256 signature sent by Zalo OA server.
+ * Only enforced when ZALO_APP_SECRET env var is configured.
+ * Prevents unauthorized parties from calling the webhook endpoint and abusing AI quota.
+ */
+function isValidZaloSignature(req: Request): boolean {
+  const secret = process.env.ZALO_APP_SECRET;
+  // If secret is not configured, skip validation (dev/testing mode)
+  if (!secret) return true;
+
+  const signature = req.headers['x-zevent-signature'] as string | undefined;
+  if (!signature) return false;
+
+  const rawBody = JSON.stringify(req.body);
+  const expected = 'sha256=' + crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+}
 
 /**
  * GET /api/v1/zalo/webhook
  * Zalo webhook verification endpoint.
  */
 export const verifyWebhook = (req: Request, res: Response) => {
-  // Zalo webhook verification logic usually involves checking a challenge or secret
-  // For the MVP, we just accept the GET request if it matches our secret setup or just return success
-  res.status(200).send('OK');
+  // Zalo webhook verification: return the challenge token sent by Zalo
+  const challenge = req.query.challenge;
+  if (challenge) {
+    res.status(200).send(challenge);
+  } else {
+    res.status(200).send('OK');
+  }
 };
 
 /**
@@ -18,6 +41,12 @@ export const verifyWebhook = (req: Request, res: Response) => {
  * Creates Customer (if new) → Conversation (if none open) → Message.
  */
 export const handleWebhook = async (req: Request, res: Response) => {
+  // Validate Zalo OA HMAC signature to prevent unauthorized webhook calls
+  if (!isValidZaloSignature(req)) {
+    res.status(403).json({ success: false, message: 'Invalid webhook signature' });
+    return;
+  }
+
   try {
     const { event_name, sender, message } = req.body;
 
